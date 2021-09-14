@@ -1,5 +1,5 @@
-class ProductsController < ApplicationController
-  before_action :set_product, only: [:new, :edit, :destroy]
+ class ProductsController < ApplicationController
+  before_action :set_product, only: [:edit, :update, :destroy]
 
   def index
     @products = Product.all
@@ -22,8 +22,11 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @product.update(preduct_params)
-    redirect_to products_path
+    if @product.update(product_params)
+      redirect_to products_path
+    else
+      render "edit"
+    end
   end
 
   def destroy
@@ -38,7 +41,7 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.requite(:product).permit(:name, :price)
+    params.require(:product).permit(:name, :price)
   end
 
 end
